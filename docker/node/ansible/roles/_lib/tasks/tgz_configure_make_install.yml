@@ -1,0 +1,23 @@
+- name: Download
+  get_url: url={{ url }} dest=/tmp/tgz_configure_image_install.tgz mode=0440
+
+- name: Tmp Dir For Compile
+  file: path=/tmp/tgz_configure_image_install state=directory
+
+- name: Extract
+  shell: tar -C /tmp/tgz_configure_image_install -zxf /tmp/tgz_configure_image_install.tgz
+
+- name: Configure
+  shell: cd /tmp/tgz_configure_image_install ; cd * ; ./configure
+
+- name: Make
+  shell: cd /tmp/tgz_configure_image_install ; cd * ; make
+
+- name: Install
+  shell: cd /tmp/tgz_configure_image_install ; cd * ; sudo make install
+
+- name: Cleanup
+  file: path={{ item }} state=absent
+  with_items:
+    - /tmp/tgz_configure_image_install
+    - /tmp/tgz_configure_image_install.tgz

@@ -1,0 +1,33 @@
+- name: 'Node.js: Install Dependencies'
+  apt: state=present pkg={{ item }}
+  with_items:
+    - gcc
+    - cpp
+    - g++
+    - automake1.9
+    - autoconf
+    - libtool
+    - flex
+    - bison
+    - python-software-properties
+    - curl
+  sudo: true
+
+- shell: 'whereis node | sed "s,.*\: *,,"'
+  register: node_location
+
+- include: ../../_lib/tasks/tgz_configure_make_install.yml url=http://nodejs.org/dist/node-latest.tar.gz
+  when: node_location.stdout == ''
+
+- name: 'Node.js: Install NPM: Download'
+  get_url: url=https://npmjs.org/install.sh dest=/tmp/npm_install.sh validate_certs=no
+  when: node_location.stdout == ''
+
+- name: 'Node.js: Install NPM: Install'
+  shell: clean=yes sh /tmp/npm_install.sh
+  sudo: true
+  when: node_location.stdout == ''
+
+- name: 'Node.js: Install NPM: Remove Install Script'
+  file: path=/tmp/npm_install.sh state=absent
+  when: node_location.stdout == ''

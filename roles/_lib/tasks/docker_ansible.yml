@@ -1,0 +1,1 @@
+- docker_image: path=./docker/ansible name=forbesmyester/ansible state=present timeout=60000

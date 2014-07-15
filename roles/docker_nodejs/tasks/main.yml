@@ -1,0 +1,2 @@
+- include: ../../_lib/tasks/docker_ansible.yml
+- docker_image: path=./docker/node name=forbesmyester/node state=present timeout=60000

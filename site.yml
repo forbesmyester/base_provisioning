@@ -1,0 +1,6 @@
+- hosts: localhost
+  vars:
+    project: bob
+  roles:
+    - docker_mongodb
+    - docker_nodejs

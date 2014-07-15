@@ -1,0 +1,6 @@
+- docker_pull: repo=mongo tag=2.6.1
+- include: ../../_lib/tasks/service_configuration.yml service_file="{{ project }}_docker_mongo" command='su {{ service_username }} -c "docker run --name {{ project }}_mongo -p 127.0.0.1:27017:27017 mongo"' chdir="." name=MongoDB
+- service: name="{{ project }}_docker_mongo" state=started
+  sudo: yes
+
+

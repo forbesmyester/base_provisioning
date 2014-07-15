@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Make a swap file!
+dd if=/dev/zero of=/swap bs=1M count=1024
+mkswap /swap
+swapon /swap
+
+# Update software
+apt-get update
+apt-get upgrade
+
+# Install and configure Ansible for local dev
+apt-get -y install python-pip python-dev
+pip install ansible
+mkdir -p /etc/ansible
+echo '[vagrant]' > /etc/ansible/hosts
+echo '127.0.0.1' >> /etc/ansible/hosts
+
+# Run Ansible to build / run docker instances
+cd /vagrant
+su vagrant -c "ansible-playbook -M /vagrant/ansible_modules/ -c local docker_install.yml"
+su vagrant -c "ansible-playbook -M /vagrant/ansible_modules/ -c local site.yml -e service_username=vagrant"

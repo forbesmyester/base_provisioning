@@ -1,0 +1,7 @@
+# Parameters
+#  * service_file
+#  * command
+#  * chdir
+- name: 'Service: Setup'
+  template: src=../templates/service_configuration.conf dest=/etc/init/{{ service_file }}.conf
+  sudo: true

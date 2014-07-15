@@ -1,0 +1,14 @@
+- hosts: localhost
+  tasks:
+    - shell: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+      sudo: yes
+    - shell: sudo pip install docker-py
+      sudo: yes
+    - apt_repository: repo='deb https://get.docker.io/ubuntu docker main' state=present update_cache=yes
+      sudo: yes
+    - apt: package=lxc-docker state=present
+      sudo: yes
+    - user: groups=docker name=vagrant append=yes
+      sudo: yes
+    - service: name=docker state=started
+      sudo: yes
